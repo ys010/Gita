@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhagavad Gita — A Daily Reading</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🕉️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #17110c;
+    --bg-vignette: radial-gradient(ellipse at 50% -10%, #2a1d13 0%, #17110c 55%);
+    --paper: #241a12;
+    --paper-2: #2c2015;
+    --border: rgba(201,161,90,0.22);
+    --border-strong: rgba(201,161,90,0.4);
+    --gold: #cd9f52;
+    --gold-bright: #e6bd72;
+    --cream: #ecdfc7;
+    --muted: #a99274;
+    --muted-2: #8a765a;
+    --shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg-vignette), var(--bg);
+    background-attachment: fixed;
+    color: var(--cream);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height:100vh;
+    padding: 32px 16px 80px;
+  }
+  .wrap{ max-width: 760px; margin: 0 auto; }
+
+  header.top{ text-align:center; margin-bottom: 28px; }
+  header.top .om{ font-size: 1.6rem; color: var(--gold); opacity:.85; letter-spacing: .3em; }
+  header.top h1{
+    font-family:'Cormorant Garamond', Georgia, serif;
+    font-weight:600; font-size: 2.6rem; letter-spacing:.02em;
+    margin: 6px 0 2px; color: var(--gold-bright);
+    text-shadow: 0 2px 20px rgba(205,159,82,0.15);
+  }
+  header.top .sub{ color: var(--muted); font-style: italic; font-size: 1rem; }
+
+  .divider{
+    display:flex; align-items:center; gap:14px; margin: 22px 0; color: var(--muted-2);
+  }
+  .divider::before, .divider::after{ content:""; flex:1; height:1px; background: linear-gradient(90deg, transparent, var(--border-strong), transparent); }
+  .divider span{ font-size:.9rem; }
+
+  /* ---- progress ---- */
+  .progress-card{
+    background: var(--paper); border:1px solid var(--border); border-radius:14px;
+    padding: 18px 20px; box-shadow: var(--shadow);
+  }
+  .progress-top{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .progress-top .label{ color: var(--muted); font-size:.88rem; letter-spacing:.03em; text-transform:uppercase; }
+  .progress-top .figure{ color: var(--gold-bright); font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.25rem; }
+  .bar-track{
+    position:relative; height:10px; border-radius:6px; background: rgba(0,0,0,0.35);
+    margin: 12px 0 8px; overflow:hidden; border:1px solid var(--border);
+  }
+  .bar-fill{
+    height:100%; border-radius:6px;
+    background: linear-gradient(90deg, #9c7a3f, var(--gold-bright));
+    box-shadow: 0 0 12px rgba(230,189,114,0.55);
+    transition: width .5s ease;
+  }
+  .chapter-ticks{ display:flex; gap:2px; margin-top:10px; }
+  .chapter-ticks .tick{
+    flex:1; height:5px; border-radius:2px; background: rgba(255,255,255,0.06);
+    cursor:pointer; position:relative;
+  }
+  .chapter-ticks .tick.done{ background: rgba(205,159,82,0.55); }
+  .chapter-ticks .tick.current{ background: var(--gold-bright); box-shadow: 0 0 6px rgba(230,189,114,0.8); }
+  .chapter-ticks .tick:hover::after{
+    content: attr(data-label); position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
+    background:#000; color:var(--cream); padding:3px 7px; border-radius:5px; font-size:.72rem;
+    white-space:nowrap; border:1px solid var(--border); pointer-events:none; z-index: 5;
+  }
+
+  /* ---- passage card ---- */
+  .passage-card{
+    background: var(--paper); border:1px solid var(--border); border-radius:16px;
+    padding: 26px 26px 22px; margin-top: 22px; box-shadow: var(--shadow);
+  }
+  .passage-header{ text-align:center; margin-bottom: 6px; }
+  .passage-header .chapter-eyebrow{ color: var(--muted); font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; }
+  .passage-header h2{
+    font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.7rem; margin:4px 0 2px; color: var(--gold-bright);
+  }
+  .passage-header .devanagari-title{ font-family:'Noto Serif Devanagari',serif; color: var(--muted); font-size:1.1rem; }
+  .passage-header .verse-range{ color: var(--muted-2); font-size:.85rem; margin-top:4px; }
+
+  .verse-block{ padding: 22px 0; border-top: 1px solid var(--border); }
+  .verse-block:first-of-type{ border-top:none; }
+  .verse-tag{
+    display:inline-block; font-size:.78rem; color:#17110c; background: var(--gold);
+    padding:2px 9px; border-radius:20px; font-family:'Crimson Pro',serif; font-weight:600; letter-spacing:.02em;
+    margin-bottom:10px;
+  }
+  .speaker{ color: var(--muted-2); font-size:.82rem; font-style:italic; margin-bottom:8px; }
+  .sanskrit{
+    font-family:'Noto Serif Devanagari', serif; font-size:1.32rem; line-height:1.9;
+    color: var(--gold-bright); white-space:pre-line; margin-bottom:10px;
+  }
+  .translit{
+    font-style:italic; color: var(--muted); font-size:.95rem; line-height:1.7;
+    white-space:pre-line; margin-bottom:14px;
+  }
+  .translation{ font-size:1.12rem; line-height:1.75; color: var(--cream); margin-bottom: 12px; }
+  .commentary-toggle{
+    background:none; border:none; color: var(--gold); font-family:'Crimson Pro',serif;
+    font-size:.88rem; cursor:pointer; padding:0; text-decoration: underline dotted;
+    text-underline-offset: 3px; opacity: .85;
+  }
+  .commentary-toggle:hover{ opacity:1; }
+  .commentary{
+    margin-top:12px; padding: 14px 16px; background: var(--paper-2); border-left: 3px solid var(--border-strong);
+    border-radius: 0 8px 8px 0; color: var(--muted); font-size: .98rem; line-height:1.7;
+    display:none;
+  }
+  .commentary.open{ display:block; }
+  .commentary .author{ color: var(--gold); font-style: italic; font-size:.85rem; display:block; margin-bottom:6px; }
+
+  /* ---- controls ---- */
+  .controls{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top: 22px; }
+  button.primary, button.ghost{
+    font-family:'Crimson Pro', serif; font-size:1rem; padding: 11px 22px; border-radius: 30px;
+    cursor:pointer; letter-spacing:.02em; transition: all .15s ease;
+  }
+  button.primary{
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold)); color:#20160b; border:none;
+    font-weight:600; box-shadow: 0 4px 16px rgba(205,159,82,0.3);
+  }
+  button.primary:hover{ transform: translateY(-1px); box-shadow: 0 6px 20px rgba(205,159,82,0.45); }
+  button.primary:disabled{ opacity:.4; cursor:not-allowed; transform:none; box-shadow:none; }
+  button.ghost{ background:transparent; color: var(--muted); border:1px solid var(--border-strong); }
+  button.ghost:hover{ color: var(--cream); border-color: var(--gold); }
+
+  .pace-row{ display:flex; align-items:center; justify-content:center; gap:10px; margin-top:16px; color: var(--muted); font-size:.9rem; }
+  .pace-row input{
+    width:52px; background: var(--paper-2); border:1px solid var(--border); color: var(--cream);
+    border-radius:6px; padding:5px 8px; font-family:'Crimson Pro',serif; font-size:.95rem; text-align:center;
+  }
+
+  .completed-banner{
+    text-align:center; padding:16px; margin-top:14px; border:1px dashed var(--border-strong);
+    border-radius:12px; color: var(--gold-bright); font-family:'Cormorant Garamond',serif; font-size:1.2rem;
+  }
+
+  /* ---- browse ---- */
+  details.browse{ margin-top: 26px; }
+  details.browse > summary{
+    cursor:pointer; color: var(--muted); font-size:.92rem; text-align:center; list-style:none;
+    padding:10px; border:1px solid var(--border); border-radius:10px; background: var(--paper);
+  }
+  details.browse > summary::-webkit-details-marker{ display:none; }
+  details.browse > summary:hover{ color: var(--gold); }
+  .browse-body{
+    margin-top:12px; background: var(--paper); border:1px solid var(--border); border-radius:12px; padding:16px;
+  }
+  .browse-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; }
+  .browse-row select{
+    background: var(--paper-2); color: var(--cream); border:1px solid var(--border); border-radius:8px;
+    padding:7px 10px; font-family:'Crimson Pro',serif; font-size:.95rem;
+  }
+  .browse-actions{ display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+
+  footer{ text-align:center; margin-top:40px; color: var(--muted-2); font-size:.8rem; }
+  footer a{ color: var(--muted); }
+
+  .loading{ text-align:center; color: var(--muted); padding: 60px 0; font-style:italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="om">श्रीमद् भगवद्गीता</div>
+    <h1>Bhagavad Gita</h1>
+    <div class="sub">a verse a day, from the field of Kurukṣetra</div>
+  </header>
+
+  <div id="app">
+    <div class="loading">Opening the book…</div>
+  </div>
+
+  <footer>
+    Text &amp; commentary sourced from the open <a href="https://github.com/vedicscriptures/bhagavad-gita" target="_blank" rel="noopener">vedicscriptures/bhagavad-gita</a> dataset.
+    Your place in the book is saved only on this device.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const CHAPTER_COUNT = 18;
+  const BOOKMARK_KEY = "gita-bookmark";
+  const DEFAULT_PACE = 5;
+
+  let chapters = null;      // { [chapterNum]: chapterData }
+  let chapterOffsets = null; // { [chapterNum]: verses before this chapter }
+  let totalVerses = 0;
+  let browsing = null;       // {chapter, verse} while previewing outside the bookmark
+
+  const app = document.getElementById("app");
+
+  function loadBookmark(){
+    let bm;
+    try{
+      bm = JSON.parse(localStorage.getItem(BOOKMARK_KEY));
+    }catch(e){ bm = null; }
+    if(!bm || typeof bm.chapter !== "number" || typeof bm.verse !== "number"){
+      bm = { chapter: 1, verse: 1, pace: DEFAULT_PACE };
+    }
+    if(!bm.pace || bm.pace < 1) bm.pace = DEFAULT_PACE;
+    return bm;
+  }
+
+  function saveBookmark(bm){
+    localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bm));
+  }
+
+  function chapterMeta(ch){ return chapters[ch]; }
+  function verseData(ch, v){
+    const c = chapters[ch];
+    if(!c) return null;
+    return c.verses[v-1] || null;
+  }
+
+  // Global 1-based index of a (chapter, verse) across the whole Gita.
+  function globalIndex(ch, v){
+    return chapterOffsets[ch] + v;
+  }
+
+  // Returns the next {chapter, verse} after the given one, or null if it was the last verse.
+  function nextRef(ch, v){
+    const c = chapters[ch];
+    if(v < c.verse_count) return { chapter: ch, verse: v+1 };
+    if(ch < CHAPTER_COUNT) return { chapter: ch+1, verse: 1 };
+    return null;
+  }
+
+  function advance(ch, v, steps){
+    let ref = { chapter: ch, verse: v };
+    for(let i=0;i<steps;i++){
+      const n = nextRef(ref.chapter, ref.verse);
+      if(!n) return null; // ran off the end of the book
+      ref = n;
+    }
+    return ref;
+  }
+
+  function collectPassage(startCh, startV, pace){
+    const verses = [];
+    let ref = { chapter: startCh, verse: startV };
+    for(let i=0;i<pace;i++){
+      const vd = verseData(ref.chapter, ref.verse);
+      if(!vd) break;
+      verses.push(vd);
+      const n = nextRef(ref.chapter, ref.verse);
+      if(!n) break;
+      ref = n;
+    }
+    return verses;
+  }
+
+  function escapeHtml(s){
+    return (s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  function renderProgress(ch, v){
+    const idx = Math.min(totalVerses, globalIndex(ch, v));
+    const pct = Math.min(100, (idx-1) / totalVerses * 100);
+    const meta = chapterMeta(ch);
+    let ticks = "";
+    for(let c=1;c<=CHAPTER_COUNT;c++){
+      let cls = "tick";
+      if(c < ch) cls += " done";
+      else if(c === ch) cls += " current";
+      const cm = chapterMeta(c);
+      ticks += `<div class="${cls}" data-label="Ch.${c} — ${escapeHtml(cm.title_translation)}" onclick="GitaApp.previewChapter(${c})"></div>`;
+    }
+    return `
+      <div class="progress-card">
+        <div class="progress-top">
+          <span class="label">Your place in the Gītā</span>
+          <span class="figure">${idx} / ${totalVerses} verses</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <div class="chapter-ticks">${ticks}</div>
+      </div>
+    `;
+  }
+
+  function verseBlockHtml(vd, isBookmarkStart){
+    const commentaryId = `c-${vd.chapter}-${vd.verse}`;
+    return `
+      <div class="verse-block">
+        <span class="verse-tag">${vd.chapter}.${vd.verse}</span>
+        ${vd.speaker ? `<div class="speaker">${escapeHtml(vd.speaker)} said —</div>` : ""}
+        <div class="sanskrit">${escapeHtml(vd.sanskrit)}</div>
+        ${vd.transliteration ? `<div class="translit">${escapeHtml(vd.transliteration)}</div>` : ""}
+        <div class="translation">${escapeHtml(vd.translation)}</div>
+        ${vd.commentary ? `
+          <button class="commentary-toggle" onclick="GitaApp.toggleCommentary('${commentaryId}')">read commentary ▾</button>
+          <div class="commentary" id="${commentaryId}">
+            ${vd.commentary_author ? `<span class="author">— ${escapeHtml(vd.commentary_author)}</span>` : ""}
+            ${escapeHtml(vd.commentary)}
+          </div>
+        ` : ""}
+      </div>
+    `;
+  }
+
+  function render(){
+    const bm = loadBookmark();
+    const viewingBookmark = !browsing;
+    const activeCh = browsing ? browsing.chapter : bm.chapter;
+    const activeV  = browsing ? browsing.verse   : bm.verse;
+
+    const meta = chapterMeta(activeCh);
+    const passage = browsing
+      ? collectPassage(activeCh, activeV, 1)
+      : collectPassage(bm.chapter, bm.verse, bm.pace);
+
+    const finished = passage.length === 0;
+    const rangeLabel = passage.length
+      ? (passage.length === 1
+          ? `${passage[0].chapter}.${passage[0].verse}`
+          : `${passage[0].chapter}.${passage[0].verse} – ${passage[passage.length-1].chapter}.${passage[passage.length-1].verse}`)
+      : "";
+
+    // The progress bar always reflects the saved bookmark, never a browsing preview,
+    // so glancing at a chapter never looks like it moved your place in the book.
+    let html = renderProgress(bm.chapter, bm.verse);
+
+    html += `
+      <div class="passage-card">
+        <div class="passage-header">
+          <div class="chapter-eyebrow">${browsing ? "Browsing" : "Today’s passage"} · Chapter ${activeCh} of ${CHAPTER_COUNT}</div>
+          <h2>${escapeHtml(meta.title_translation)}</h2>
+          <div class="devanagari-title">${escapeHtml(meta.title_sanskrit)}</div>
+          ${rangeLabel ? `<div class="verse-range">verses ${rangeLabel}</div>` : ""}
+        </div>
+    `;
+
+    if(finished){
+      html += `<div class="completed-banner">🙏 You have read the entire Bhagavad Gītā.<br>Begin again whenever you're ready.</div>`;
+    }else{
+      html += passage.map(vd => verseBlockHtml(vd)).join("");
+    }
+
+    html += `</div>`; // passage-card
+
+    if(viewingBookmark){
+      html += `
+        <div class="controls">
+          <button class="primary" id="markReadBtn" ${finished ? "disabled" : ""} onclick="GitaApp.markRead()">Mark read &amp; continue</button>
+          ${finished ? `<button class="ghost" onclick="GitaApp.restart()">Start over</button>` : ""}
+        </div>
+        <div class="pace-row">
+          reading pace:
+          <input type="number" min="1" max="50" id="paceInput" value="${bm.pace}" onchange="GitaApp.setPace(this.value)">
+          verses / day
+        </div>
+      `;
+    }else{
+      html += `
+        <div class="controls">
+          <button class="ghost" onclick="GitaApp.browseStep(-1)">◂ previous verse</button>
+          <button class="ghost" onclick="GitaApp.browseStep(1)">next verse ▸</button>
+        </div>
+        <div class="controls">
+          <button class="primary" onclick="GitaApp.setBookmarkHere()">Set as today’s bookmark</button>
+          <button class="ghost" onclick="GitaApp.returnToToday()">back to today’s passage</button>
+        </div>
+      `;
+    }
+
+    html += browseWidgetHtml(activeCh, activeV);
+
+    app.innerHTML = html;
+  }
+
+  function browseWidgetHtml(activeCh, activeV){
+    let chOptions = "";
+    for(let c=1;c<=CHAPTER_COUNT;c++){
+      chOptions += `<option value="${c}" ${c===activeCh?"selected":""}>Ch ${c} — ${escapeHtml(chapterMeta(c).title_translation)}</option>`;
+    }
+    const vCount = chapterMeta(activeCh).verse_count;
+    let vOptions = "";
+    for(let v=1; v<=vCount; v++){
+      vOptions += `<option value="${v}" ${v===activeV?"selected":""}>Verse ${v}</option>`;
+    }
+    return `
+      <details class="browse" ${browsing ? "open" : ""}>
+        <summary>Browse any chapter &amp; verse</summary>
+        <div class="browse-body">
+          <div class="browse-row">
+            <select id="browseChapter" onchange="GitaApp.browseChapterChanged(this.value)">${chOptions}</select>
+            <select id="browseVerse">${vOptions}</select>
+          </div>
+          <div class="browse-actions">
+            <button class="primary" onclick="GitaApp.goBrowse()">Read this verse</button>
+          </div>
+        </div>
+      </details>
+    `;
+  }
+
+  const GitaApp = {
+    toggleCommentary(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.classList.toggle("open");
+      const btn = el.previousElementSibling;
+      if(btn && btn.classList.contains("commentary-toggle")){
+        btn.textContent = el.classList.contains("open") ? "hide commentary ▴" : "read commentary ▾";
+      }
+    },
+    markRead(){
+      const bm = loadBookmark();
+      const next = advance(bm.chapter, bm.verse, bm.pace);
+      if(next){
+        bm.chapter = next.chapter;
+        bm.verse = next.verse;
+      }else{
+        // ran off the end: pin at the final verse, completion banner will show
+        const last = lastVerseRef();
+        bm.chapter = last.chapter;
+        bm.verse = last.verse + 1; // one past the end, signals "finished"
+      }
+      saveBookmark(bm);
+      browsing = null;
+      render();
+    },
+    restart(){
+      const bm = loadBookmark();
+      bm.chapter = 1; bm.verse = 1;
+      saveBookmark(bm);
+      browsing = null;
+      render();
+    },
+    setPace(val){
+      const n = Math.max(1, Math.min(50, parseInt(val,10) || DEFAULT_PACE));
+      const bm = loadBookmark();
+      bm.pace = n;
+      saveBookmark(bm);
+      render();
+    },
+    previewChapter(ch){
+      browsing = { chapter: ch, verse: 1 };
+      render();
+    },
+    browseChapterChanged(chVal){
+      browsing = { chapter: parseInt(chVal,10), verse: 1 };
+      render();
+    },
+    goBrowse(){
+      const ch = parseInt(document.getElementById("browseChapter").value, 10);
+      const v = parseInt(document.getElementById("browseVerse").value, 10);
+      browsing = { chapter: ch, verse: v };
+      render();
+    },
+    browseStep(dir){
+      const cur = browsing || loadBookmark();
+      if(dir > 0){
+        const n = nextRef(cur.chapter, cur.verse);
+        browsing = n || cur;
+      }else{
+        browsing = prevRef(cur.chapter, cur.verse) || cur;
+      }
+      render();
+    },
+    setBookmarkHere(){
+      if(!browsing) return;
+      const bm = loadBookmark();
+      bm.chapter = browsing.chapter;
+      bm.verse = browsing.verse;
+      saveBookmark(bm);
+      browsing = null;
+      render();
+    },
+    returnToToday(){
+      browsing = null;
+      render();
+    }
+  };
+  window.GitaApp = GitaApp;
+
+  function prevRef(ch, v){
+    if(v > 1) return { chapter: ch, verse: v-1 };
+    if(ch > 1){
+      const pc = ch-1;
+      return { chapter: pc, verse: chapters[pc].verse_count };
+    }
+    return null;
+  }
+
+  function lastVerseRef(){
+    return { chapter: CHAPTER_COUNT, verse: chapters[CHAPTER_COUNT].verse_count };
+  }
+
+  async function init(){
+    try{
+      const fetches = [];
+      for(let c=1;c<=CHAPTER_COUNT;c++){
+        const n = String(c).padStart(2,"0");
+        fetches.push(fetch(`data/chapter-${n}.json`).then(r=>{
+          if(!r.ok) throw new Error(`chapter ${c}: HTTP ${r.status}`);
+          return r.json();
+        }));
+      }
+      const results = await Promise.all(fetches);
+      chapters = {};
+      chapterOffsets = {};
+      let offset = 0;
+      results.forEach((data, i) => {
+        const c = i+1;
+        chapters[c] = data;
+        chapterOffsets[c] = offset;
+        offset += data.verse_count;
+      });
+      totalVerses = offset;
+
+      // Clamp a stale/out-of-range bookmark (e.g. from a shorter dataset) into range.
+      const bm = loadBookmark();
+      if(bm.chapter > CHAPTER_COUNT || !chapters[bm.chapter]){
+        bm.chapter = 1; bm.verse = 1; saveBookmark(bm);
+      }else if(bm.verse > chapters[bm.chapter].verse_count + 1){
+        bm.verse = chapters[bm.chapter].verse_count + 1; saveBookmark(bm);
+      }
+
+      render();
+    }catch(err){
+      app.innerHTML = `<div class="loading">Could not load the text (${escapeHtml(err.message)}). If you're viewing this file directly (file://), serve it over a local web server instead — e.g. <code>python3 -m http.server</code>.</div>`;
+      console.error(err);
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
