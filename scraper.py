@@ -1,142 +1,200 @@
 #!/usr/bin/env python3
-"""Scrape the Bhagavad Gita (Sanskrit + translation + commentary) into
-data/chapter-NN.json, one file per chapter, one record per verse.
-
-Source: the vedicscriptures/bhagavad-gita dataset, published live on
-raw.githubusercontent.com. Each chapter and each verse is served as its own
-JSON resource there (chapter/bhagavadgita_chapter_<n>.json and
-slok/bhagavadgita_chapter_<n>_slok_<v>.json), so this fetches and parses
-every chapter and verse page individually, the same way it would page
-through per-verse HTML on any other Gita site. BeautifulSoup is used in
-clean_text() to strip stray markup some commentary fields carry.
-
-For each verse it walks a fixed chain of commentators (Prabhupada first,
-then Sivananda, etc.) and keeps the first one that has both a translation
-and a commentary, since not every commentator covers every verse.
 """
+scraper.py — pulls the Bhagavad Gita (Swami Sivananda's translation and
+commentary) from dlshq.org and writes data/chapter-01.json .. chapter-18.json
+in the schema index.html reads.
+
+Run this yourself, once, from your own machine (this sandbox's network
+policy blocks dlshq.org, so it can't be run from inside a Claude Code
+session — see scraper_github_dataset.py for a scraper that *can* run here,
+sourced from a mirror on GitHub instead):
+
+    pip install requests beautifulsoup4
+    python scraper.py
+
+Re-run any time to refresh (e.g. if the source page is corrected/updated).
+This script contains no scripture text itself — it only fetches and parses
+the public page at runtime, when you run it.
+"""
+
 import json
-import os
 import re
-import time
+import sys
+from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
-CHAPTER_URL = "https://raw.githubusercontent.com/vedicscriptures/bhagavad-gita/master/chapter/bhagavadgita_chapter_{ch}.json"
-SLOK_URL = "https://raw.githubusercontent.com/vedicscriptures/bhagavad-gita/master/slok/bhagavadgita_chapter_{ch}_slok_{v}.json"
+SOURCE_URL = "https://www.dlshq.org/download/bhagavad-gita/"
+OUT_DIR = Path(__file__).parent / "data"
 
-OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+ROMAN_TO_INT = {
+    "I": 1, "II": 2, "III": 3, "IV": 4, "V": 5, "VI": 6, "VII": 7, "VIII": 8,
+    "IX": 9, "X": 10, "XI": 11, "XII": 12, "XIII": 13, "XIV": 14, "XV": 15,
+    "XVI": 16, "XVII": 17, "XVIII": 18,
+}
 
-# (json key, display name) in priority order: first commentator with both
-# a translation and a commentary for a given verse wins.
-COMMENTATOR_CHAIN = [
-    ("prabhu", "A.C. Bhaktivedanta Swami Prabhupada"),
-    ("siva", "Swami Sivananda"),
-    ("tej", "Swami Tejomayananda"),
-    ("chinmay", "Swami Chinmayananda"),
-    ("adi", "Swami Adidevananda"),
-    ("purohit", "Shri Purohit Swami"),
-]
+VERSE_NUM_RE = re.compile(r"^(\d+(?:[-–]\d+)?)\.\s*(.*)$", re.S)
+COMMENTARY_RE = re.compile(r"^\*{0,2}COMMENTARY:?\*{0,2}\s*(.*)$", re.S | re.I)
+SPEAKER_RE = re.compile(r"^\s*(.+?)\s+Uvaach\w*\s*:?\s*$", re.I)
 
 
-def clean_text(text):
+def is_italic_only(p_tag):
+    """True if a <p> tag's visible text is entirely inside <em>/<i> children."""
+    text = p_tag.get_text(strip=True)
     if not text:
-        return ""
-    text = BeautifulSoup(text, "html.parser").get_text()
-    text = text.replace("\r\n", "\n")
-    text = re.sub(r"[ \t]+", " ", text)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    return text.strip()
+        return False
+    italic_text = "".join(t.get_text() for t in p_tag.find_all(["em", "i"]))
+    return len(italic_text.strip()) >= len(text) * 0.8  # tolerant match
 
 
-def fetch_json(url, retries=4):
-    last_err = None
-    for attempt in range(retries):
-        try:
-            resp = requests.get(url, timeout=20)
-            resp.raise_for_status()
-            return resp.json()
-        except (requests.RequestException, ValueError) as e:
-            last_err = e
-            time.sleep(1.5 * (attempt + 1))
-    raise RuntimeError(f"failed to fetch {url}: {last_err}")
+def fetch_soup():
+    resp = requests.get(SOURCE_URL, headers={"User-Agent": "Mozilla/5.0 (personal study tool)"}, timeout=30)
+    resp.raise_for_status()
+    return BeautifulSoup(resp.text, "html.parser")
 
 
-def pick_translation_and_commentary(verse_json):
-    for key, display_name in COMMENTATOR_CHAIN:
-        block = verse_json.get(key)
-        if not block:
+def parse(soup):
+    """
+    Walk the page in document order. Chapters are marked by an <h2> whose
+    text is a bare roman numeral (I..XVIII), immediately followed by an
+    <h2> with the English chapter title. Verses are recognised as:
+      - one or more consecutive italic-only <p> = Sanskrit lines (the first
+        of two such lines is a speaker tag, e.g. "Arjuna Uvaacha:")
+      - the next non-italic <p> starting "N. " or "N-M. " = translation
+      - an optional following <p> starting "COMMENTARY:" = commentary
+    Verse numbers like "21-22" (two verses translated as one continuous
+    passage) are expanded into individual verse records with the same
+    text, tagged with a shared verse_label, so every chapter still counts
+    up one verse number at a time.
+    """
+    chapters = {}
+    current_chapter = None
+    pending_sanskrit = []
+    expect_title_next = False
+
+    body_tags = soup.find_all(["h2", "h3", "p"])
+
+    for tag in body_tags:
+        text = tag.get_text(" ", strip=True)
+        if not text:
             continue
-        translation = block.get("et") or block.get("ht")
-        commentary = block.get("ec")
-        if translation and commentary and commentary.strip() != translation.strip():
-            return {
-                "author": block.get("author", display_name),
-                "translation": clean_text(translation),
-                "commentary": clean_text(commentary),
-            }
-        if translation and not commentary:
-            # Keep looking for a commentator who *also* has a commentary,
-            # but remember this as a fallback translation-only match.
+
+        if tag.name == "h2":
+            roman = text.strip().upper()
+            if roman in ROMAN_TO_INT:
+                current_chapter = ROMAN_TO_INT[roman]
+                chapters[current_chapter] = {"chapter": current_chapter, "title": None, "raw_verses": []}
+                expect_title_next = True
+                pending_sanskrit = []
+                continue
+            if expect_title_next and current_chapter is not None:
+                chapters[current_chapter]["title"] = text
+                expect_title_next = False
+                continue
             continue
-    # Second pass: accept translation-only if nothing better was found.
-    for key, display_name in COMMENTATOR_CHAIN:
-        block = verse_json.get(key)
-        if not block:
-            continue
-        translation = block.get("et") or block.get("ht")
-        if translation:
-            return {
-                "author": block.get("author", display_name),
-                "translation": clean_text(translation),
-                "commentary": "",
-            }
-    return {"author": "", "translation": "", "commentary": ""}
+
+        if current_chapter is None:
+            continue  # front matter (prayers, prefaces) — skipped on purpose
+
+        if tag.name == "p":
+            m_comment = COMMENTARY_RE.match(text)
+            if m_comment and chapters[current_chapter]["raw_verses"]:
+                chapters[current_chapter]["raw_verses"][-1]["commentary"] = m_comment.group(1).strip()
+                continue
+
+            m_verse = VERSE_NUM_RE.match(text)
+            if m_verse:
+                chapters[current_chapter]["raw_verses"].append({
+                    "number": m_verse.group(1),
+                    "sanskrit": pending_sanskrit,
+                    "translation": m_verse.group(2).strip(),
+                })
+                pending_sanskrit = []
+                continue
+
+            if is_italic_only(tag):
+                pending_sanskrit.append(text)
+                continue
+
+            # anything else (chapter summaries, closing verses of each
+            # discourse) is intentionally skipped — this scraper only
+            # keeps numbered verses + their commentary.
+
+    return chapters
 
 
-def scrape_chapter(ch):
-    meta = fetch_json(CHAPTER_URL.format(ch=ch))
-    verse_count = meta["verses_count"]
+def split_speaker(lines):
+    """A verse's italic lines are either [verse] or [speaker tag, verse]."""
+    if len(lines) == 2:
+        m = SPEAKER_RE.match(lines[0])
+        speaker = m.group(1).strip() if m else lines[0].strip().rstrip(":").strip()
+        return speaker, lines[1]
+    return "", lines[0] if lines else ""
+
+
+def expand_verse_number(number):
+    """'21-22' -> ([21, 22], '21-22'); '5' -> ([5], None)."""
+    if "-" in number:
+        a, b = number.split("-", 1)
+        return list(range(int(a), int(b) + 1)), number
+    return [int(number)], None
+
+
+def build_chapter_record(chapter_num, raw):
     verses = []
-    for v in range(1, verse_count + 1):
-        vd = fetch_json(SLOK_URL.format(ch=ch, v=v))
-        tc = pick_translation_and_commentary(vd)
-        verses.append(
-            {
-                "chapter": ch,
-                "verse": v,
-                "speaker": vd.get("speaker", "") or "",
-                "sanskrit": clean_text(vd.get("slok")),
-                "transliteration": clean_text(vd.get("transliteration")),
-                "translation": tc["translation"],
-                "commentary": tc["commentary"],
-                "commentary_author": tc["author"],
-            }
-        )
-        time.sleep(0.03)
+    for v in raw["raw_verses"]:
+        speaker, sanskrit = split_speaker(v["sanskrit"])
+        verse_nums, label = expand_verse_number(v["number"])
+        commentary = (v.get("commentary") or "").strip()
+        for vn in verse_nums:
+            verses.append({
+                "chapter": chapter_num,
+                "verse": vn,
+                "verse_label": label,
+                "speaker": speaker,
+                "sanskrit": sanskrit,
+                "translation": v["translation"].strip(),
+                "commentary": commentary,
+                "commentary_author": "Swami Sivananda" if commentary else "",
+            })
+    verses.sort(key=lambda x: x["verse"])
     return {
-        "chapter": ch,
-        "title_sanskrit": meta.get("name", ""),
-        "title_transliteration": meta.get("transliteration", ""),
-        "title_translation": meta.get("translation", ""),
-        "summary": (meta.get("summary") or {}).get("en", ""),
-        "verse_count": verse_count,
+        "chapter": chapter_num,
+        "title_sanskrit": "",
+        "title_transliteration": "",
+        "title_translation": raw.get("title") or "",
+        "summary": "",
+        "verse_count": len(verses),
         "verses": verses,
     }
 
 
 def main():
-    os.makedirs(OUT_DIR, exist_ok=True)
+    print(f"Fetching {SOURCE_URL} ...")
+    soup = fetch_soup()
+    print("Parsing ...")
+    chapters = parse(soup)
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     total_verses = 0
-    for ch in range(1, 19):
-        print(f"Scraping chapter {ch}...")
-        data = scrape_chapter(ch)
-        out_path = os.path.join(OUT_DIR, f"chapter-{ch:02d}.json")
-        with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"  wrote {out_path} ({len(data['verses'])} verses)")
-        total_verses += len(data["verses"])
-    print(f"Done. {total_verses} verses across 18 chapters.")
+    for n in range(1, 19):
+        raw = chapters.get(n)
+        if not raw or not raw["raw_verses"]:
+            print(f"  ! chapter {n}: nothing parsed — check the source page structure "
+                  f"or adjust the selectors in parse()", file=sys.stderr)
+            continue
+        record = build_chapter_record(n, raw)
+        out_path = OUT_DIR / f"chapter-{n:02d}.json"
+        out_path.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+        total_verses += record["verse_count"]
+        print(f"  chapter {n:2d}: {record['title_translation']!r} — {record['verse_count']} verses -> {out_path.name}")
+
+    print(f"\nDone. {total_verses} verses written to {OUT_DIR}/")
+    if total_verses < 650:
+        print("Note: the traditional count is 700 verses — if you're well under that, "
+              "the parser likely missed some verses due to page-formatting quirks. "
+              "Re-check parse() against the actual page HTML.", file=sys.stderr)
 
 
 if __name__ == "__main__":

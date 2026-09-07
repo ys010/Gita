@@ -1,16 +1,26 @@
 # Gita
 
-A single-page, dark and warm reader for the Bhagavad Gita — Sanskrit,
-transliteration, translation and commentary for all 701 verses across its
-18 chapters, read one small daily passage at a time.
+A single-page, dark and warm reader for the Bhagavad Gita — Sanskrit verse,
+translation and commentary for all 701 verses across its 18 chapters, read
+one small daily passage at a time.
 
 **[Read it live →](#)** *(see GitHub Pages setup below)*
 
 ## What's here
 
-- `scraper.py` — fetches the verse-by-verse data (Sanskrit, transliteration,
-  translation, commentary) and writes `data/chapter-01.json` … `chapter-18.json`.
-- `data/` — the scraped output, one JSON file per chapter.
+- `scraper.py` — fetches Swami Sivananda's translation and commentary from
+  [dlshq.org](https://www.dlshq.org/download/bhagavad-gita/) and writes
+  `data/chapter-01.json` … `chapter-18.json`, the schema `index.html` reads.
+  **Must be run from a machine with normal internet access** — see below.
+- `scraper_github_dataset.py` — an alternate scraper, sourced from the
+  [vedicscriptures/bhagavad-gita](https://github.com/vedicscriptures/bhagavad-gita)
+  dataset (Prabhupada's translation, plus real Devanagari script and
+  transliteration, which the dlshq source doesn't have). Not currently
+  used by the live reader, but kept because it's the one scraper here that
+  *can* run inside a sandboxed Claude Code session — dlshq.org and every
+  other Gita site tried is blocked by such sandboxes' network policy, but
+  raw.githubusercontent.com generally isn't.
+- `data/` — the scraped output that feeds the reader, one JSON file per chapter.
 - `index.html` — the reader itself: a single static HTML file with vanilla
   JS, no build step, no framework.
 
@@ -23,15 +33,16 @@ pip install -r requirements.txt
 python scraper.py
 ```
 
-Source data: the open [vedicscriptures/bhagavad-gita](https://github.com/vedicscriptures/bhagavad-gita)
-dataset (GPLv3), which itself compiles well-known public translations and
-commentaries (Prabhupada, Sivananda, and others). For each verse the
-scraper walks a fixed chain of commentators and keeps the first one with
-both a translation and a commentary.
+This needs a normal internet connection to reach dlshq.org — it won't run
+inside a network-restricted sandbox. Re-run any time to refresh (e.g. if
+the source page is corrected). Console output shows a per-chapter verse
+count and flags anything that parsed to zero verses.
 
 Note on verse count: the traditional count of 700 verses is a round
-figure; chapter 13 has a well-known textual variant that puts the total
-at 701 verses in most modern editions, this one included.
+figure. This edition numbers to 701 because chapter 1, verses 21 and 22,
+are one continuous sentence traditionally translated (and counted) as a
+single passage but still numbered individually — the reader shows both
+numbers on that one entry (`1.21-22`) and steps through them as two verses.
 
 ## Reading the app
 
@@ -49,6 +60,11 @@ key `gita-bookmark`, as `{chapter, verse, pace}` — nothing is sent
 anywhere. "Mark read & continue" advances the bookmark by `pace` verses
 (default 5/day); the progress bar and chapter ticks always reflect that
 saved bookmark, even while you're browsing elsewhere in the text.
+
+Note: dlshq.org's source page gives each verse in Romanized/IAST-style
+Sanskrit only (e.g. `Dharmakshetre kurukshetre...`), not Devanagari
+script — that's what's shown as the verse text. `scraper_github_dataset.py`
+is the one that produces real Devanagari, if you switch sources (see above).
 
 ## GitHub Pages
 

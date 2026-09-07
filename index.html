@@ -104,8 +104,9 @@
   }
   .speaker{ color: var(--muted-2); font-size:.82rem; font-style:italic; margin-bottom:8px; }
   .sanskrit{
-    font-family:'Noto Serif Devanagari', serif; font-size:1.32rem; line-height:1.9;
-    color: var(--gold-bright); white-space:pre-line; margin-bottom:10px;
+    font-family:'Cormorant Garamond', serif; font-style: italic; font-weight:600;
+    font-size:1.5rem; line-height:1.7;
+    color: var(--gold-bright); white-space:pre-line; margin-bottom:14px;
   }
   .translit{
     font-style:italic; color: var(--muted); font-size:.95rem; line-height:1.7;
@@ -190,7 +191,7 @@
   </div>
 
   <footer>
-    Text &amp; commentary sourced from the open <a href="https://github.com/vedicscriptures/bhagavad-gita" target="_blank" rel="noopener">vedicscriptures/bhagavad-gita</a> dataset.
+    Swami Sivananda's translation &amp; commentary, sourced from <a href="https://www.dlshq.org/download/bhagavad-gita/" target="_blank" rel="noopener">The Divine Life Society</a>.
     Your place in the book is saved only on this device.
   </footer>
 
@@ -303,7 +304,7 @@
     const commentaryId = `c-${vd.chapter}-${vd.verse}`;
     return `
       <div class="verse-block">
-        <span class="verse-tag">${vd.chapter}.${vd.verse}</span>
+        <span class="verse-tag">${vd.chapter}.${vd.verse_label || vd.verse}</span>
         ${vd.speaker ? `<div class="speaker">${escapeHtml(vd.speaker)} said —</div>` : ""}
         <div class="sanskrit">${escapeHtml(vd.sanskrit)}</div>
         ${vd.transliteration ? `<div class="translit">${escapeHtml(vd.transliteration)}</div>` : ""}
@@ -346,7 +347,7 @@
         <div class="passage-header">
           <div class="chapter-eyebrow">${browsing ? "Browsing" : "Today’s passage"} · Chapter ${activeCh} of ${CHAPTER_COUNT}</div>
           <h2>${escapeHtml(meta.title_translation)}</h2>
-          <div class="devanagari-title">${escapeHtml(meta.title_sanskrit)}</div>
+          ${meta.title_sanskrit ? `<div class="devanagari-title">${escapeHtml(meta.title_sanskrit)}</div>` : ""}
           ${rangeLabel ? `<div class="verse-range">verses ${rangeLabel}</div>` : ""}
         </div>
     `;
