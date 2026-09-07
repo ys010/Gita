@@ -1,0 +1,563 @@
+{
+  "chapter": 18,
+  "title": "The Yoga of Liberation by Renunciation",
+  "verses": [
+    {
+      "number": "1",
+      "sanskrit": [
+        "Arjuna Uvaacha :",
+        "Sannyaasasya mahaabaaho tattwamicchaami veditum; Tyaagasya cha hrisheekesha prithak keshinishoodana."
+      ],
+      "translation": "I desire to know severally, O mighty-armed, the essence or truth of renunciation, O Hrishikesa, as also of abandonment, O slayer of Kesi!"
+    },
+    {
+      "number": "2",
+      "sanskrit": [
+        "Sri Bhagavaan Uvaacha :",
+        "Kaamyaanaam karmanaam nyaasam sannyaasam kavayoviduh; Sarvakarmaphalatyaagam praahustyaagam vichakshanaah."
+      ],
+      "translation": "The sages understand Sannyas to be the renunciation of action with desire; the wise declare the abandonment of the fruits of all actions as Tyaga."
+    },
+    {
+      "number": "3",
+      "sanskrit": [
+        "Tyaajyam doshavadityeke karma praahurmaneeshinah; Yajnadaanatapah karma na tyaajyamiti chaapare."
+      ],
+      "translation": "Some philosophers declare that all actions should be abandoned as an evil, while others declare that acts of gift, sacrifice and austerity should not be relinquished."
+    },
+    {
+      "number": "4",
+      "sanskrit": [
+        "Nishchayam shrinu me tatra tyaage bharatasattama; Tyaago hi purushavyaaghra trividhah samprakeertitah."
+      ],
+      "translation": "Hear from Me the conclusion or the final truth about this abandonment, O best of the Bharatas; abandonment, verily, O best of men, has been declared to be of three kinds!"
+    },
+    {
+      "number": "5",
+      "sanskrit": [
+        "Yajnadaanatapah karma na tyaajyam kaaryameva tat; Yajno daanam tapashchaiva paavanaani maneeshinaam."
+      ],
+      "translation": "Acts of sacrifice, gift and austerity should not be abandoned, but should be performed; sacrifice, gift and also austerity are the purifiers of the wise."
+    },
+    {
+      "number": "6",
+      "sanskrit": [
+        "Etaanyapi tu karmaani sangam tyaktwaa phalaani cha; Kartavyaaneeti me paartha nishchitam matamuttamam."
+      ],
+      "translation": "But even these actions should be performed leaving aside attachment and the desire for rewards, O Arjuna! This is My certain and best conviction.",
+      "commentary": "This is a summary of the doctrine of Karma Yoga already enunciated before. The defect in Karma is not in the action itself but in attachment and expectation of a reward."
+    },
+    {
+      "number": "7",
+      "sanskrit": [
+        "Niyatasya tu sannyaasah karmano nopapadyate; Mohaattasya parityaagas taamasah parikeertitah."
+      ],
+      "translation": "Verily, the renunciation of obligatory action is improper; the abandonment of the same from delusion is declared to be Tamasic."
+    },
+    {
+      "number": "8",
+      "sanskrit": [
+        "Duhkhamityeva yat karma kaayakleshabhayaat tyajet; Sa kritwaa raajasam tyaagam naiva tyaagaphalam labhet."
+      ],
+      "translation": "He who abandons action on account of the fear of bodily trouble (because it is painful), he does not obtain the merit of renunciation by doing such Rajasic renunciation."
+    },
+    {
+      "number": "9",
+      "sanskrit": [
+        "Kaaryamityeva yatkarma niyatam kriyate’rjuna; Sangam tyaktwaa phalam chaiva sa tyaagah saattwiko matah."
+      ],
+      "translation": "Whatever obligatory action is done, O Arjuna, merely because it ought to be done, abandoning attachment and also the desire for reward, that renunciation is regarded as Sattwic!"
+    },
+    {
+      "number": "10",
+      "sanskrit": [
+        "Na dweshtyakushalam karma kushale naanushajjate; Tyaagee sattwasamaavishto medhaavee cchinnasamshayah."
+      ],
+      "translation": "The man of renunciation, pervaded by purity, intelligent and with his doubts cut asunder, does not hate a disagreeable work nor is he attached to an agreeable one."
+    },
+    {
+      "number": "11",
+      "sanskrit": [
+        "Na hi dehabhritaa shakyam tyaktum karmaanyasheshatah; Yastu karmaphalatyaagi sa tyaageetyabhidheeyate."
+      ],
+      "translation": "Verily, it is not possible for an embodied being to abandon actions entirely; but he who relinquishes the rewards of actions is verily called a man of renunciation.",
+      "commentary": "Nature, and your own nature, too, will urge you to do actions. You will have to abandon the idea of agency and the fruits of actions. Then no action will bind you."
+    },
+    {
+      "number": "12",
+      "sanskrit": [
+        "Anishtamishtam mishram cha trividham karmanah phalam; Bhavatyatyaaginaam pretya na tu sannyaasinaam kwachit."
+      ],
+      "translation": "The threefold fruit of action–evil, good and mixed–accrues after death to the non-abandoners, but never to the abandoners."
+    },
+    {
+      "number": "13",
+      "sanskrit": [
+        "Panchaitaani mahaabaaho kaaranaani nibodha me; Saankhye kritaante proktaani siddhaye sarvakarmanaam."
+      ],
+      "translation": "Learn from Me, O mighty-armed Arjuna, these five causes, as declared in the Sankhya system for the accomplishment of all actions!"
+    },
+    {
+      "number": "14",
+      "sanskrit": [
+        "Adhishthaanam tathaa kartaa karanam cha prithagvidham; Vividhaashcha prithakcheshtaa daivam chaivaatra panchamam."
+      ],
+      "translation": "The body, the doer, the various senses, the different functions of various sorts, and the presiding Deity, also, the fifth,"
+    },
+    {
+      "number": "15",
+      "sanskrit": [
+        "Shareeravaangmanobhiryat karma praarabhate narah; Nyaayyam vaa vipareetam vaa panchaite tasya hetavah."
+      ],
+      "translation": "Whatever action a man performs by his body, speech and mind, whether right or the reverse, these five are its causes."
+    },
+    {
+      "number": "16",
+      "sanskrit": [
+        "Tatraivam sati kartaaram aatmaanam kevalam tu yah; Pashyatyakritabuddhitwaan na sa pashyati durmatih."
+      ],
+      "translation": "Now, such being the case, he who, owing to untrained understanding, looks upon his Self, which is isolated, as the agent, he of perverted intelligence, sees not."
+    },
+    {
+      "number": "17",
+      "sanskrit": [
+        "Yasya naahankrito bhaavo buddhiryasya na lipyate; Hatwaapi sa imaam llokaan na hanti na nibadhyate."
+      ],
+      "translation": "He who is ever free from the egoistic notion, whose intelligence is not tainted by (good or evil), though he slays these people, he slayeth not, nor is he bound (by the action)."
+    },
+    {
+      "number": "18",
+      "sanskrit": [
+        "Jnaanam jneyam parijnaataa trividhaa karmachodanaa; Karanam karma karteti trividhah karmasangrahah."
+      ],
+      "translation": "Knowledge, the knowable and the knower form the threefold impulse to action; the organ, the action and the agent form the threefold basis of action."
+    },
+    {
+      "number": "19",
+      "sanskrit": [
+        "Jnaanam karma cha kartaa cha tridhaiva gunabhedatah; Prochyate gunasankhyaane yathaavacchrinu taanyapi."
+      ],
+      "translation": "Knowledge, action and the actor are declared in the science of the Gunas (the Sankhya philosophy) to be of three kinds only, according to the distinction of the Gunas. Hear them also duly."
+    },
+    {
+      "number": "20",
+      "sanskrit": [
+        "Sarvabhooteshu yenaikam bhaavamavyayameekshate; Avibhaktam vibhakteshu tajjnaanam viddhi saattwikam."
+      ],
+      "translation": "That by which one sees the one indestructible Reality in all beings, not separate in all the separate beings–know thou that knowledge to be Sattwic (pure)."
+    },
+    {
+      "number": "21",
+      "sanskrit": [
+        "Prithaktwena tu yajjnaanam naanaabhaavaan prithagvidhaan; Vetti sarveshu bhooteshu tajjnaanam viddhi raajasam."
+      ],
+      "translation": "But that knowledge which sees in all beings various entities of distinct kinds as different from one another–know thou that knowledge to be Rajasic (passionate)."
+    },
+    {
+      "number": "22",
+      "sanskrit": [
+        "Yattu kritsnavadekasmin kaarye saktamahaitukam; Atattwaarthavadalpam cha tattaamasamudaahritam."
+      ],
+      "translation": "But that which clings to one single effect as if it were the whole, without reason, without foundation in Truth, and trivial–that is declared to be Tamasic (dark)."
+    },
+    {
+      "number": "23",
+      "sanskrit": [
+        "Niyatam sangarahitam araagadweshatah kritam; Aphalaprepsunaa karma yattat saattwikamuchyate."
+      ],
+      "translation": "An action which is ordained, which is free from attachment, which is done without love or hatred by one who is not desirous of any reward–that action is declared to be Sattwic."
+    },
+    {
+      "number": "24",
+      "sanskrit": [
+        "Yattu kaamepsunaa karma saahankaarena vaa punah; Kriyate bahulaayaasam tadraajasamudaahritam."
+      ],
+      "translation": "But that action which is done by one longing for the fulfilment of desires or gain, with egoism or with much effort–that is declared to be Rajasic."
+    },
+    {
+      "number": "25",
+      "sanskrit": [
+        "Anubandham kshayam himsaam anavekshya cha paurusham; Mohaadaarabhyate karma yattat taamasamuchyate."
+      ],
+      "translation": "That action which is undertaken from delusion, without regard to the consequences of loss, injury and (one’s own) ability–that is declared to be Tamasic."
+    },
+    {
+      "number": "26",
+      "sanskrit": [
+        "Muktasango’nahamvaadi dhrityutsaahasamanvitah; Siddhyasiddhyor nirvikaarah kartaa saattwika uchyate."
+      ],
+      "translation": "He who is free from attachment, non-egoistic, endowed with firmness and enthusiasm and unaffected by success or failure, is called Sattwic."
+    },
+    {
+      "number": "27",
+      "sanskrit": [
+        "Raagee karmaphalaprepsur lubdho himsaatmako’shuchih; Harshashokaanvitah kartaa raajasah parikeertitah."
+      ],
+      "translation": "Passionate, desiring to obtain the rewards of actions, cruel, greedy, impure, moved by joy and sorrow, such an agent is said to be Rajasic."
+    },
+    {
+      "number": "28",
+      "sanskrit": [
+        "Ayuktah praakritah stabdhah shatho naishkritiko’lasah; Vishaadee deerghasootree cha kartaa taamasa uchyate."
+      ],
+      "translation": "Unsteady, dejected, unbending, cheating, malicious, vulgar, lazy and proscrastinating–such an agent is called Tamasic."
+    },
+    {
+      "number": "29",
+      "sanskrit": [
+        "Buddherbhedam dhriteshchaiva gunatastrividham shrinu; Prochyamaanamasheshena prithaktwena dhananjaya."
+      ],
+      "translation": "Hear thou the threefold division of the intellect and firmness according to the Gunas, as I declare them fully and distinctly, O Arjuna!"
+    },
+    {
+      "number": "30",
+      "sanskrit": [
+        "Pravrittim cha nivrittim cha karyaakaarye bhayaabhaye; Bandhammoksham cha yaa vetti buddhih saa paartha saattwikee."
+      ],
+      "translation": "That which knows the path of work and renunciation, what ought to be done and what ought not to be done, fear and fearlessness, bondage and liberation–that intellect is Sattwic, O Arjuna!"
+    },
+    {
+      "number": "31",
+      "sanskrit": [
+        "Yayaa dharmamadharmam cha kaaryam chaakaaryameva cha; Ayathaavat prajaanaati buddhih saa paartha raajasee."
+      ],
+      "translation": "That by which one incorrectly understands Dharma and Adharma, and also what ought to be done and what ought not to be done–that intellect, O Arjuna, is Rajasic!",
+      "commentary": "That which is ordained in the scriptures is Dharma. That which hurls you into the abyss of ignorance is Adharma. The Rajasic intellect is not able to distinguish between righteous and unrighteous actions."
+    },
+    {
+      "number": "32",
+      "sanskrit": [
+        "Adharmam dharmamiti yaa manyate tamasaavritaa; Sarvaarthaan vipareetaamshcha buddhih saa paartha taamasee."
+      ],
+      "translation": "That which, enveloped in darkness, views Adharma as Dharma and all things perverted–that intellect, O Arjuna, is called Tamasic!"
+    },
+    {
+      "number": "33",
+      "sanskrit": [
+        "Dhrityaa yayaa dhaarayate manah praanendriyakriyaah; Yogenaavyabhichaarinyaa dhritih saa paartha saattwikee."
+      ],
+      "translation": "The unwavering firmness by which, through Yoga, the functions of the mind, the life-force and the senses are restrained–that firmness, O Arjuna, is Sattwic!"
+    },
+    {
+      "number": "34",
+      "sanskrit": [
+        "Yayaa tu dharmakaamaarthaan dhrityaa dhaarayate’rjuna; Prasangena phalaakaangkshee dhritih saa paartha raajasee."
+      ],
+      "translation": "But that firmness, O Arjuna, by which, on account of attachment and desire for reward, one holds fast to Dharma, enjoyment of pleasures and earning of wealth–that firmness, O Arjuna, is Rajasic!"
+    },
+    {
+      "number": "35",
+      "sanskrit": [
+        "Yayaa swapnam bhayam shokam vishaadam madameva cha; Na vimunchati durmedhaa dhritih saa paartha taamasee."
+      ],
+      "translation": "That by which a stupid man does not abandon sleep, fear, grief, despair and also conceit–that firmness, O Arjuna, is Tamasic!"
+    },
+    {
+      "number": "36",
+      "sanskrit": [
+        "Sukham twidaaneem trividham shrinu me bharatarshabha; Abhyaasaadramate yatra duhkhaantam cha nigacchati."
+      ],
+      "translation": "Now hear from Me, O Arjuna, of the threefold pleasure, in which one rejoices by practice and surely comes to the end of pain!"
+    },
+    {
+      "number": "37",
+      "sanskrit": [
+        "Yattadagre vishamiva parinaame’mritopamam; Tatsukham saattwikam proktam aatmabuddhiprasaadajam."
+      ],
+      "translation": "That which is like poison at first but in the end like nectar–that pleasure is declared to be Sattwic, born of the purity of one’s own mind due to Self-realisation."
+    },
+    {
+      "number": "38",
+      "sanskrit": [
+        "Vishayendriya samyogaad yattadagre’mritopamam; Parinaame vishamiva tatsukham raajasam smritam."
+      ],
+      "translation": "That pleasure which arises from the contact of the sense-organs with the objects, which is at first like nectar and in the end like poison–that is declared to be Rajasic."
+    },
+    {
+      "number": "39",
+      "sanskrit": [
+        "Yadagre chaanubandhe cha sukham mohanamaatmanah; Nidraalasyapramaadottham tattaamasamudaahritam."
+      ],
+      "translation": "That pleasure which at first and in the sequel is delusive of the self, arising from sleep, indolence and heedlessness–such a pleasure is declared to be Tamasic."
+    },
+    {
+      "number": "40",
+      "sanskrit": [
+        "Na tadasti prithivyaam vaa divi deveshu vaa punah; Sattwam prakritijairmuktam yadebhih syaat tribhirgunaih."
+      ],
+      "translation": "There is no being on earth or again in heaven among the gods that is liberated from the three qualities born of Nature."
+    },
+    {
+      "number": "41",
+      "sanskrit": [
+        "Braahmanakshatriyavishaam shoodraanaam cha parantapa; Karmaani pravibhaktaani swabhaavaprabhavairgunaih."
+      ],
+      "translation": "Of Brahmanas, Kshatriyas and Vaishyas, as also the Sudras, O Arjuna, the duties are distributed according to the qualities born of their own nature!"
+    },
+    {
+      "number": "42",
+      "sanskrit": [
+        "Shamo damastapah shaucham kshaantiraarjavameva cha; Jnaanam vijnaanam aastikyam brahmakarma swabhaavajam."
+      ],
+      "translation": "Serenity, self-restraint, austerity, purity, forgiveness and also uprightness, knowledge, realisation and belief in God are the duties of the Brahmanas, born of (their own) nature."
+    },
+    {
+      "number": "43",
+      "sanskrit": [
+        "Shauryam tejo dhritirdaakshyam yuddhe chaapyapalaayanam; Daanameeshwarabhaavashcha kshaatram karmaswabhaavajam."
+      ],
+      "translation": "Prowess, splendour, firmness, dexterity and also not fleeing from battle, generosity and lordliness are the duties of Kshatriyas, born of (their own) nature."
+    },
+    {
+      "number": "44",
+      "sanskrit": [
+        "Krishigaurakshyavaanijyam vaishyakarma swabhaavajam; Paricharyaatmakam karma shoodrasyaapi swabhaavajam."
+      ],
+      "translation": "Agriculture, cattle-rearing and trade are the duties of the Vaishya (merchant class), born of (their own) nature; and action consisting of service is the duty of the Sudra (servant class), born of (their own) nature.",
+      "commentary": "When a man does his duties rightly according to his order of life, his heart gets purified and he goes to heaven."
+    },
+    {
+      "number": "45",
+      "sanskrit": [
+        "Swe swe karmanyabhiratah samsiddhim labhate narah; Swakarmaniratah siddhim yathaa vindati tacchrinu."
+      ],
+      "translation": "Each man, devoted to his own duty, attains perfection. How he attains perfection while being engaged in his own duty, hear now."
+    },
+    {
+      "number": "46",
+      "sanskrit": [
+        "Yatah pravrittirbhootaanaam yena sarvamidam tatam; Swakarmanaa tamabhyarchya siddhim vindati maanavah."
+      ],
+      "translation": "He from whom all the beings have evolved and by whom all this is pervaded, worshipping Him with his own duty, man attains perfection.",
+      "commentary": "Man attains perfection by worshipping the Lord through the performance of his own duty, that is, he becomes qualified for the dawn of Self-knowledge."
+    },
+    {
+      "number": "47",
+      "sanskrit": [
+        "Shreyaanswadharmo vigunah paradharmaat swanushthitaat; Swabhaavaniyatam karma kurvannaapnoti kilbisham."
+      ],
+      "translation": "Better is one’s own duty (though) destitute of merits, than the duty of another well performed. He who does the duty ordained by his own nature incurs no sin."
+    },
+    {
+      "number": "48",
+      "sanskrit": [
+        "Sahajam karma kaunteya sadoshamapi na tyajet; Sarvaarambhaa hi doshena dhoomenaagnirivaavritaah."
+      ],
+      "translation": "One should not abandon, O Arjuna, the duty to which one is born, though faulty; for, all undertakings are enveloped by evil, as fire by smoke!"
+    },
+    {
+      "number": "49",
+      "sanskrit": [
+        "Asaktabuddhih sarvatra jitaatmaa vigatasprihah; Naishkarmyasiddhim paramaam sannyaasenaadhigacchati."
+      ],
+      "translation": "He whose intellect is unattached everywhere, who has subdued his self, from whom desire has fled,–he by renunciation attains the supreme state of freedom from action."
+    },
+    {
+      "number": "50",
+      "sanskrit": [
+        "Siddhim praapto yathaa brahma tathaapnoti nibodha me; Samaasenaiva kaunteya nishthaa jnaanasya yaa paraa."
+      ],
+      "translation": "Learn from Me in brief, O Arjuna, how he who has attained perfection reaches Brahman, that supreme state of knowledge."
+    },
+    {
+      "number": "51",
+      "sanskrit": [
+        "Buddhyaa vishuddhayaa yukto dhrityaatmaanam niyamya cha; Shabdaadeen vishayaanstyaktwaa raagadweshau vyudasya cha."
+      ],
+      "translation": "Endowed with a pure intellect, controlling the self by firmness, relinquishing sound and other objects and abandoning both hatred and attraction,"
+    },
+    {
+      "number": "52",
+      "sanskrit": [
+        "Viviktasevee laghwaashee yatavaakkaayamaanasah; Dhyaanayogaparo nityam vairaagyam samupaashritah."
+      ],
+      "translation": "Dwelling in solitude, eating but little, with speech, body and mind subdued, always engaged in concentration and meditation, taking refuge in dispassion,"
+    },
+    {
+      "number": "53",
+      "sanskrit": [
+        "Ahankaaram balam darpam kaamam krodham parigraham; Vimuchya nirmamah shaanto brahmabhooyaaya kalpate."
+      ],
+      "translation": "Having abandoned egoism, strength, arrogance, anger, desire, and covetousness, free from the notion of “mine” and peaceful,–he is fit for becoming Brahman."
+    },
+    {
+      "number": "54",
+      "sanskrit": [
+        "Brahmabhootah prasannaatmaa na shochati na kaangkshati; Samah sarveshu bhooteshu madbhaktim labhate paraam."
+      ],
+      "translation": "Becoming Brahman, serene in the Self, he neither grieves nor desires; the same to all beings, he attains supreme devotion unto Me."
+    },
+    {
+      "number": "55",
+      "sanskrit": [
+        "Bhaktyaa maamabhijaanaati yaavaanyashchaasmi tattwatah; Tato maam tattwato jnaatwaa vishate tadanantaram."
+      ],
+      "translation": "By devotion he knows Me in truth, what and who I am; and knowing Me in truth, he forthwith enters into the Supreme."
+    },
+    {
+      "number": "56",
+      "sanskrit": [
+        "Sarvakarmaanyapi sadaa kurvaano madvyapaashrayah; Matprasaadaadavaapnoti shaashwatam padamavyayam."
+      ],
+      "translation": "Doing all actions always, taking refuge in Me, by My Grace he obtains the eternal, indestructible state or abode."
+    },
+    {
+      "number": "57",
+      "sanskrit": [
+        "Chetasaa sarvakarmaani mayi sannyasya matparah; Buddhiyogam upaashritya macchittah satatam bhava."
+      ],
+      "translation": "Mentally renouncing all actions in Me, having Me as the highest goal, resorting to the Yoga of discrimination do thou ever fix thy mind on Me."
+    },
+    {
+      "number": "58",
+      "sanskrit": [
+        "Macchittah sarvadurgaani matprasaadaat tarishyasi; Atha chet twam ahankaaraan na shroshyasi vinangkshyasi."
+      ],
+      "translation": "Fixing thy mind on Me, thou shalt by My Grace overcome all obstacles; but if from egoism thou wilt not hear Me, thou shalt perish."
+    },
+    {
+      "number": "59",
+      "sanskrit": [
+        "Yadahankaaram aashritya na yotsya iti manyase; Mithyaisha vyavasaayaste prakritistwaam niyokshyati."
+      ],
+      "translation": "If, filled with egoism, thou thinkest: “I will not fight”, vain is this, thy resolve; Nature will compel thee."
+    },
+    {
+      "number": "60",
+      "sanskrit": [
+        "Swabhaavajena kaunteya nibaddhah swena karmanaa; Kartum necchasi yanmohaat karishyasyavasho’pi tat."
+      ],
+      "translation": "O Arjuna, bound by thy own Karma (action) born of thy own nature, that which from delusion thou wishest not to do, even that thou shalt do helplessly!",
+      "commentary": "Thou wilt be forced to fight because of thy nature. It will compel thee to fight, much against thy will."
+    },
+    {
+      "number": "61",
+      "sanskrit": [
+        "Eeshwarah sarvabhootaanaam hriddeshe’rjuna tishthati; Bhraamayan sarvabhootaani yantraaroodhaani maayayaa."
+      ],
+      "translation": "The Lord dwells in the hearts of all beings, O Arjuna, causing all beings, by His illusive power, to revolve as if mounted on a machine!"
+    },
+    {
+      "number": "62",
+      "sanskrit": [
+        "Tameva sharanam gaccha sarvabhaavena bhaarata; Tatprasaadaatparaam shaantim sthaanam praapsyasi shaashwatam."
+      ],
+      "translation": "Fly unto Him for refuge with all thy being, O Arjuna! By His Grace thou shalt obtain supreme peace and the eternal abode."
+    },
+    {
+      "number": "63",
+      "sanskrit": [
+        "Iti te jnaanamaakhyaatam guhyaad guhyataram mayaa; Vimrishyaitadasheshena yathecchasi tathaa kuru."
+      ],
+      "translation": "Thus has wisdom more secret than secrecy itself been declared unto thee by Me; having reflected over it fully, then act thou as thou wishest."
+    },
+    {
+      "number": "64",
+      "sanskrit": [
+        "Sarvaguhyatamam bhooyah shrinu me paramam vachah; Ishto’si me dridhamiti tato vakshyaami te hitam."
+      ],
+      "translation": "Hear thou again My supreme word, most secret of all; because thou art dearly beloved of Me, I will tell thee what is good."
+    },
+    {
+      "number": "65",
+      "sanskrit": [
+        "Manmanaa bhava madbhakto madyaajee maam namaskuru; Maamevaishyasi satyam te pratijaane priyo’si me."
+      ],
+      "translation": "Fix thy mind on Me, be devoted to Me, sacrifice to Me, bow down to Me. Thou shalt come even to Me; truly do I promise unto thee, (for) thou art dear to Me."
+    },
+    {
+      "number": "66",
+      "sanskrit": [
+        "Sarvadharmaan parityajya maamekam sharanam vraja; Aham twaa sarvapaapebhyo mokshayishyaami maa shuchah."
+      ],
+      "translation": "Abandoning all duties, take refuge in Me alone; I will liberate thee from all sins; grieve not."
+    },
+    {
+      "number": "67",
+      "sanskrit": [
+        "Idam te naatapaskaaya naabhaktaaya kadaachana; Na chaashushrooshave vaachyam na cha maam yo’bhyasooyati."
+      ],
+      "translation": "This is never to be spoken by thee to one who is devoid of austerities, to one who is not devoted, nor to one who does not render service, nor who does not desire to listen, nor to one who cavils at Me."
+    },
+    {
+      "number": "68",
+      "sanskrit": [
+        "Ya imam paramam guhyam madbhakteshvabhidhaasyati; Bhaktim mayi paraam kritwaa maamevaishyatyasamshayah."
+      ],
+      "translation": "He who with supreme devotion to Me will teach this supreme secret to My devotees, shall doubtless come to Me."
+    },
+    {
+      "number": "69",
+      "sanskrit": [
+        "Na cha tasmaanmanushyeshu kashchinme priyakrittamah; Bhavitaa na cha me tasmaadanyah priyataro bhuvi."
+      ],
+      "translation": "Nor is there any among men who does dearer service to Me, nor shall there be another on earth dearer to Me than he.",
+      "commentary": "He who hands down this Gita to My devotees does immense service to Me. He is extremely dear to Me. In the present generation, there will be none dearer to Me in the world, nor shall there be in the future also."
+    },
+    {
+      "number": "70",
+      "sanskrit": [
+        "Adhyeshyate cha ya imam dharmyam samvaadamaavayoh; Jnaanayajnena tenaaham ishtah syaamiti me matih."
+      ],
+      "translation": "And he who will study this sacred dialogue of ours, by him I shall have been worshipped by the sacrifice of wisdom; such is My conviction."
+    },
+    {
+      "number": "71",
+      "sanskrit": [
+        "Shraddhaavaan anasooyashcha shrinuyaadapi yo narah; So’pi muktah shubhaamllokaan praapnuyaat punyakarmanaam."
+      ],
+      "translation": "The man also who hears this, full of faith and free from malice, he, too, liberated, shall attain to the happy worlds of those of righteous deeds."
+    },
+    {
+      "number": "72",
+      "sanskrit": [
+        "Kacchid etacchrutam paartha twayaikaagrena chetasaa; Kacchid ajnaanasammohah pranashtaste dhananjaya."
+      ],
+      "translation": "Has this been heard, O Arjuna, with one-pointed mind? Has the delusion of thy ignorance been fully destroyed, O Dhananjaya?"
+    },
+    {
+      "number": "73",
+      "sanskrit": [
+        "Arjuna Uvaacha :",
+        "Nashto mohah smritirlabdhaa twatprasaadaanmayaachyuta; Sthito’smi gata sandehah karishye vachanam tava."
+      ],
+      "translation": "Destroyed is my delusion as I have gained my memory (knowledge) through Thy Grace, O Krishna! I am firm; my doubts are gone. I will act according to Thy word."
+    },
+    {
+      "number": "74",
+      "sanskrit": [
+        "Sanjaya Uvaacha :",
+        "Ityaham vaasudevasya paarthasya cha mahaatmanah; Samvaadam imam ashrausham adbhutam romaharshanam."
+      ],
+      "translation": "Thus have I heard this wonderful dialogue between Krishna and the high-souled Arjuna, which causes the hair to stand on end."
+    },
+    {
+      "number": "75",
+      "sanskrit": [
+        "Vyaasaprasaadaacchrutavaan etadguhyamaham param; Yogam yogeshwaraat krishnaat saakshaat kathayatah swayam."
+      ],
+      "translation": "Through the Grace of Vyasa I have heard this supreme and most secret Yoga direct from Krishna, the Lord of Yoga Himself declaring it."
+    },
+    {
+      "number": "76",
+      "sanskrit": [
+        "Raajan samsmritya samsmritya samvaadam imam adbhutam; Keshavaarjunayoh punyam hrishyaami cha muhurmuhuh."
+      ],
+      "translation": "O King, remembering this wonderful and holy dialogue between Krishna and Arjuna, I rejoice again and again!"
+    },
+    {
+      "number": "77",
+      "sanskrit": [
+        "Taccha samsmritya samsmritya roopamatyadbhutam hareh; Vismayo me mahaan raajan hrishyaami cha punah punah."
+      ],
+      "translation": "And remembering again and again also that most wonderful form of Hari, great is my wonder, O King! And I rejoice again and again!"
+    },
+    {
+      "number": "78",
+      "sanskrit": [
+        "Yatra yogeshwarah krishno yatra paartho dhanurdharah; Tatra shreervijayo bhootirdhruvaa neetirmatirmama."
+      ],
+      "translation": "Wherever there is Krishna, the Lord of Yoga, wherever there is Arjuna, the archer, there are prosperity, happiness, victory and firm policy; such is my conviction."
+    }
+  ]
+}
