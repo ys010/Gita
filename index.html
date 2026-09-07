@@ -93,15 +93,32 @@
     font-family:'Cormorant Garamond',serif; font-weight:600; font-size:1.7rem; margin:4px 0 2px; color: var(--gold-bright);
   }
   .passage-header .devanagari-title{ font-family:'Noto Serif Devanagari',serif; color: var(--muted); font-size:1.1rem; }
-  .passage-header .verse-range{ color: var(--muted-2); font-size:.85rem; margin-top:4px; }
 
-  .verse-block{ padding: 22px 0; border-top: 1px solid var(--border); }
+  .verse-block{
+    padding: 22px 18px; margin: 0 -18px; border-top: 1px solid var(--border);
+    border-radius: 10px; scroll-margin-top: 24px; transition: background .3s ease;
+  }
   .verse-block:first-of-type{ border-top:none; }
+  .verse-block.is-past{ opacity: .5; }
+  .verse-block.is-current{
+    background: rgba(205,159,82,0.09);
+    box-shadow: inset 0 0 0 1px var(--border-strong);
+  }
+  .verse-head{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
   .verse-tag{
     display:inline-block; font-size:.78rem; color:#17110c; background: var(--gold);
     padding:2px 9px; border-radius:20px; font-family:'Crimson Pro',serif; font-weight:600; letter-spacing:.02em;
-    margin-bottom:10px;
   }
+  .verse-block.is-past .verse-tag{ background: var(--muted-2); }
+  .current-badge{
+    font-size:.76rem; color: var(--gold-bright); font-style: italic; letter-spacing:.02em;
+  }
+  .mark-here-btn{
+    background:none; border:1px solid var(--border-strong); color: var(--muted);
+    font-family:'Crimson Pro',serif; font-size:.76rem; padding: 3px 10px; border-radius:20px;
+    cursor:pointer; margin-left:auto; opacity:.7; transition: all .15s ease;
+  }
+  .mark-here-btn:hover{ opacity:1; color: var(--gold-bright); border-color: var(--gold); }
   .speaker{ color: var(--muted-2); font-size:.82rem; font-style:italic; margin-bottom:8px; }
   .sanskrit{
     font-family:'Cormorant Garamond', serif; font-style: italic; font-weight:600;
@@ -142,34 +159,20 @@
   button.ghost{ background:transparent; color: var(--muted); border:1px solid var(--border-strong); }
   button.ghost:hover{ color: var(--cream); border-color: var(--gold); }
 
-  .pace-row{ display:flex; align-items:center; justify-content:center; gap:10px; margin-top:16px; color: var(--muted); font-size:.9rem; }
-  .pace-row input{
-    width:52px; background: var(--paper-2); border:1px solid var(--border); color: var(--cream);
-    border-radius:6px; padding:5px 8px; font-family:'Crimson Pro',serif; font-size:.95rem; text-align:center;
-  }
-
   .completed-banner{
     text-align:center; padding:16px; margin-top:14px; border:1px dashed var(--border-strong);
     border-radius:12px; color: var(--gold-bright); font-family:'Cormorant Garamond',serif; font-size:1.2rem;
   }
 
-  /* ---- browse ---- */
-  details.browse{ margin-top: 26px; }
-  details.browse > summary{
-    cursor:pointer; color: var(--muted); font-size:.92rem; text-align:center; list-style:none;
-    padding:10px; border:1px solid var(--border); border-radius:10px; background: var(--paper);
+  /* ---- chapter nav ---- */
+  .chapter-nav{
+    margin-top:22px; background: var(--paper); border:1px solid var(--border); border-radius:12px;
+    padding:14px 16px; display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap;
   }
-  details.browse > summary::-webkit-details-marker{ display:none; }
-  details.browse > summary:hover{ color: var(--gold); }
-  .browse-body{
-    margin-top:12px; background: var(--paper); border:1px solid var(--border); border-radius:12px; padding:16px;
-  }
-  .browse-row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:center; }
-  .browse-row select{
+  .chapter-nav select{
     background: var(--paper-2); color: var(--cream); border:1px solid var(--border); border-radius:8px;
-    padding:7px 10px; font-family:'Crimson Pro',serif; font-size:.95rem;
+    padding:7px 10px; font-family:'Crimson Pro',serif; font-size:.95rem; max-width: 60vw;
   }
-  .browse-actions{ display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
 
   footer{ text-align:center; margin-top:40px; color: var(--muted-2); font-size:.8rem; }
   footer a{ color: var(--muted); }
@@ -203,12 +206,12 @@
 
   const CHAPTER_COUNT = 18;
   const BOOKMARK_KEY = "gita-bookmark";
-  const DEFAULT_PACE = 5;
 
   let chapters = null;      // { [chapterNum]: chapterData }
   let chapterOffsets = null; // { [chapterNum]: verses before this chapter }
   let totalVerses = 0;
-  let browsing = null;       // {chapter, verse} while previewing outside the bookmark
+  let viewChapter = null;    // which chapter is currently displayed (defaults to the bookmark's)
+  let scrollToBookmark = false; // one-shot flag: scroll the bookmarked verse into view after this render
 
   const app = document.getElementById("app");
 
@@ -218,14 +221,13 @@
       bm = JSON.parse(localStorage.getItem(BOOKMARK_KEY));
     }catch(e){ bm = null; }
     if(!bm || typeof bm.chapter !== "number" || typeof bm.verse !== "number"){
-      bm = { chapter: 1, verse: 1, pace: DEFAULT_PACE };
+      bm = { chapter: 1, verse: 1 };
     }
-    if(!bm.pace || bm.pace < 1) bm.pace = DEFAULT_PACE;
     return bm;
   }
 
   function saveBookmark(bm){
-    localStorage.setItem(BOOKMARK_KEY, JSON.stringify(bm));
+    localStorage.setItem(BOOKMARK_KEY, JSON.stringify({ chapter: bm.chapter, verse: bm.verse }));
   }
 
   function chapterMeta(ch){ return chapters[ch]; }
@@ -240,36 +242,8 @@
     return chapterOffsets[ch] + v;
   }
 
-  // Returns the next {chapter, verse} after the given one, or null if it was the last verse.
-  function nextRef(ch, v){
-    const c = chapters[ch];
-    if(v < c.verse_count) return { chapter: ch, verse: v+1 };
-    if(ch < CHAPTER_COUNT) return { chapter: ch+1, verse: 1 };
-    return null;
-  }
-
-  function advance(ch, v, steps){
-    let ref = { chapter: ch, verse: v };
-    for(let i=0;i<steps;i++){
-      const n = nextRef(ref.chapter, ref.verse);
-      if(!n) return null; // ran off the end of the book
-      ref = n;
-    }
-    return ref;
-  }
-
-  function collectPassage(startCh, startV, pace){
-    const verses = [];
-    let ref = { chapter: startCh, verse: startV };
-    for(let i=0;i<pace;i++){
-      const vd = verseData(ref.chapter, ref.verse);
-      if(!vd) break;
-      verses.push(vd);
-      const n = nextRef(ref.chapter, ref.verse);
-      if(!n) break;
-      ref = n;
-    }
-    return verses;
+  function lastVerseRef(){
+    return { chapter: CHAPTER_COUNT, verse: chapters[CHAPTER_COUNT].verse_count };
   }
 
   function escapeHtml(s){
@@ -286,7 +260,7 @@
       if(c < ch) cls += " done";
       else if(c === ch) cls += " current";
       const cm = chapterMeta(c);
-      ticks += `<div class="${cls}" data-label="Ch.${c} — ${escapeHtml(cm.title_translation)}" onclick="GitaApp.previewChapter(${c})"></div>`;
+      ticks += `<div class="${cls}" data-label="Ch.${c} — ${escapeHtml(cm.title_translation)}" onclick="GitaApp.goToChapter(${c})"></div>`;
     }
     return `
       <div class="progress-card">
@@ -300,11 +274,29 @@
     `;
   }
 
-  function verseBlockHtml(vd, isBookmarkStart){
+  function verseBlockHtml(vd, bm, isLastOfBook){
     const commentaryId = `c-${vd.chapter}-${vd.verse}`;
+    const idx = globalIndex(vd.chapter, vd.verse);
+    const bmIdx = globalIndex(bm.chapter, bm.verse);
+    const isCurrent = idx === bmIdx;
+    const isPast = idx < bmIdx;
+    const stateClass = isCurrent ? "is-current" : (isPast ? "is-past" : "is-future");
+
+    let marker;
+    if(isCurrent){
+      marker = `<span class="current-badge">📍 you're here</span>`;
+    }else if(isLastOfBook){
+      marker = `<button class="mark-here-btn" onclick="GitaApp.markHere(${vd.chapter}, ${vd.verse}, true)">mark as finished</button>`;
+    }else{
+      marker = `<button class="mark-here-btn" onclick="GitaApp.markHere(${vd.chapter}, ${vd.verse})">mark as here</button>`;
+    }
+
     return `
-      <div class="verse-block">
-        <span class="verse-tag">${vd.chapter}.${vd.verse_label || vd.verse}</span>
+      <div class="verse-block ${stateClass}" id="verse-${vd.chapter}-${vd.verse}">
+        <div class="verse-head">
+          <span class="verse-tag">${vd.chapter}.${vd.verse_label || vd.verse}</span>
+          ${marker}
+        </div>
         ${vd.speaker ? `<div class="speaker">${escapeHtml(vd.speaker)} said —</div>` : ""}
         <div class="sanskrit">${escapeHtml(vd.sanskrit)}</div>
         ${vd.transliteration ? `<div class="translit">${escapeHtml(vd.transliteration)}</div>` : ""}
@@ -322,97 +314,60 @@
 
   function render(){
     const bm = loadBookmark();
-    const viewingBookmark = !browsing;
-    const activeCh = browsing ? browsing.chapter : bm.chapter;
-    const activeV  = browsing ? browsing.verse   : bm.verse;
+    const meta = chapterMeta(viewChapter);
+    const last = lastVerseRef();
+    const onCurrentChapter = viewChapter === bm.chapter;
 
-    const meta = chapterMeta(activeCh);
-    const passage = browsing
-      ? collectPassage(activeCh, activeV, 1)
-      : collectPassage(bm.chapter, bm.verse, bm.pace);
-
-    const finished = passage.length === 0;
-    const rangeLabel = passage.length
-      ? (passage.length === 1
-          ? `${passage[0].chapter}.${passage[0].verse}`
-          : `${passage[0].chapter}.${passage[0].verse} – ${passage[passage.length-1].chapter}.${passage[passage.length-1].verse}`)
-      : "";
-
-    // The progress bar always reflects the saved bookmark, never a browsing preview,
-    // so glancing at a chapter never looks like it moved your place in the book.
     let html = renderProgress(bm.chapter, bm.verse);
 
     html += `
       <div class="passage-card">
         <div class="passage-header">
-          <div class="chapter-eyebrow">${browsing ? "Browsing" : "Today’s passage"} · Chapter ${activeCh} of ${CHAPTER_COUNT}</div>
+          <div class="chapter-eyebrow">Chapter ${viewChapter} of ${CHAPTER_COUNT}${onCurrentChapter ? " · your current chapter" : ""}</div>
           <h2>${escapeHtml(meta.title_translation)}</h2>
           ${meta.title_sanskrit ? `<div class="devanagari-title">${escapeHtml(meta.title_sanskrit)}</div>` : ""}
-          ${rangeLabel ? `<div class="verse-range">verses ${rangeLabel}</div>` : ""}
         </div>
     `;
 
-    if(finished){
-      html += `<div class="completed-banner">🙏 You have read the entire Bhagavad Gītā.<br>Begin again whenever you're ready.</div>`;
-    }else{
-      html += passage.map(vd => verseBlockHtml(vd)).join("");
+    html += meta.verses.map(vd =>
+      verseBlockHtml(vd, bm, vd.chapter === last.chapter && vd.verse === last.verse)
+    ).join("");
+
+    if(bm.chapter === CHAPTER_COUNT && bm.verse > last.verse && viewChapter === CHAPTER_COUNT){
+      html += `
+        <div class="completed-banner">🙏 You have read the entire Bhagavad Gītā.<br>Begin again whenever you're ready.
+          <div class="controls" style="margin-top:12px;">
+            <button class="ghost" onclick="GitaApp.restart()">Start over</button>
+          </div>
+        </div>
+      `;
     }
 
     html += `</div>`; // passage-card
 
-    if(viewingBookmark){
-      html += `
-        <div class="controls">
-          <button class="primary" id="markReadBtn" ${finished ? "disabled" : ""} onclick="GitaApp.markRead()">Mark read &amp; continue</button>
-          ${finished ? `<button class="ghost" onclick="GitaApp.restart()">Start over</button>` : ""}
-        </div>
-        <div class="pace-row">
-          reading pace:
-          <input type="number" min="1" max="50" id="paceInput" value="${bm.pace}" onchange="GitaApp.setPace(this.value)">
-          verses / day
-        </div>
-      `;
-    }else{
-      html += `
-        <div class="controls">
-          <button class="ghost" onclick="GitaApp.browseStep(-1)">◂ previous verse</button>
-          <button class="ghost" onclick="GitaApp.browseStep(1)">next verse ▸</button>
-        </div>
-        <div class="controls">
-          <button class="primary" onclick="GitaApp.setBookmarkHere()">Set as today’s bookmark</button>
-          <button class="ghost" onclick="GitaApp.returnToToday()">back to today’s passage</button>
-        </div>
-      `;
-    }
-
-    html += browseWidgetHtml(activeCh, activeV);
+    html += chapterNavHtml(bm);
 
     app.innerHTML = html;
+
+    if(scrollToBookmark){
+      scrollToBookmark = false;
+      const target = document.getElementById(`verse-${bm.chapter}-${Math.min(bm.verse, last.verse)}`);
+      if(target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   }
 
-  function browseWidgetHtml(activeCh, activeV){
+  function chapterNavHtml(bm){
     let chOptions = "";
     for(let c=1;c<=CHAPTER_COUNT;c++){
-      chOptions += `<option value="${c}" ${c===activeCh?"selected":""}>Ch ${c} — ${escapeHtml(chapterMeta(c).title_translation)}</option>`;
-    }
-    const vCount = chapterMeta(activeCh).verse_count;
-    let vOptions = "";
-    for(let v=1; v<=vCount; v++){
-      vOptions += `<option value="${v}" ${v===activeV?"selected":""}>Verse ${v}</option>`;
+      chOptions += `<option value="${c}" ${c===viewChapter?"selected":""}>Ch ${c} — ${escapeHtml(chapterMeta(c).title_translation)}</option>`;
     }
     return `
-      <details class="browse" ${browsing ? "open" : ""}>
-        <summary>Browse any chapter &amp; verse</summary>
-        <div class="browse-body">
-          <div class="browse-row">
-            <select id="browseChapter" onchange="GitaApp.browseChapterChanged(this.value)">${chOptions}</select>
-            <select id="browseVerse">${vOptions}</select>
-          </div>
-          <div class="browse-actions">
-            <button class="primary" onclick="GitaApp.goBrowse()">Read this verse</button>
-          </div>
-        </div>
-      </details>
+      <div class="chapter-nav">
+        <button class="ghost" ${viewChapter<=1?"disabled":""} onclick="GitaApp.goToChapter(${viewChapter-1})">◂ prev chapter</button>
+        <select onchange="GitaApp.goToChapter(this.value)">${chOptions}</select>
+        <button class="ghost" ${viewChapter>=CHAPTER_COUNT?"disabled":""} onclick="GitaApp.goToChapter(${viewChapter+1})">next chapter ▸</button>
+        ${viewChapter!==bm.chapter ? `<button class="primary" onclick="GitaApp.jumpToBookmark()">jump to my place</button>` : ""}
+      </div>
     `;
   }
 
@@ -426,88 +381,34 @@
         btn.textContent = el.classList.contains("open") ? "hide commentary ▴" : "read commentary ▾";
       }
     },
-    markRead(){
-      const bm = loadBookmark();
-      const next = advance(bm.chapter, bm.verse, bm.pace);
-      if(next){
-        bm.chapter = next.chapter;
-        bm.verse = next.verse;
-      }else{
-        // ran off the end: pin at the final verse, completion banner will show
-        const last = lastVerseRef();
-        bm.chapter = last.chapter;
-        bm.verse = last.verse + 1; // one past the end, signals "finished"
-      }
+    // Sets the bookmark to exactly this verse — "I'm reading here."
+    // asFinished pins one verse past the very end of the book, so the
+    // completion banner shows (same sentinel the init clamp understands).
+    markHere(ch, v, asFinished){
+      const bm = { chapter: ch, verse: asFinished ? v + 1 : v };
       saveBookmark(bm);
-      browsing = null;
+      viewChapter = bm.chapter <= CHAPTER_COUNT ? bm.chapter : ch;
       render();
     },
     restart(){
+      saveBookmark({ chapter: 1, verse: 1 });
+      viewChapter = 1;
+      scrollToBookmark = true;
+      render();
+    },
+    goToChapter(ch){
+      viewChapter = Math.max(1, Math.min(CHAPTER_COUNT, parseInt(ch, 10)));
+      render();
+      window.scrollTo({ top: document.querySelector(".passage-card").offsetTop - 16, behavior: "smooth" });
+    },
+    jumpToBookmark(){
       const bm = loadBookmark();
-      bm.chapter = 1; bm.verse = 1;
-      saveBookmark(bm);
-      browsing = null;
-      render();
-    },
-    setPace(val){
-      const n = Math.max(1, Math.min(50, parseInt(val,10) || DEFAULT_PACE));
-      const bm = loadBookmark();
-      bm.pace = n;
-      saveBookmark(bm);
-      render();
-    },
-    previewChapter(ch){
-      browsing = { chapter: ch, verse: 1 };
-      render();
-    },
-    browseChapterChanged(chVal){
-      browsing = { chapter: parseInt(chVal,10), verse: 1 };
-      render();
-    },
-    goBrowse(){
-      const ch = parseInt(document.getElementById("browseChapter").value, 10);
-      const v = parseInt(document.getElementById("browseVerse").value, 10);
-      browsing = { chapter: ch, verse: v };
-      render();
-    },
-    browseStep(dir){
-      const cur = browsing || loadBookmark();
-      if(dir > 0){
-        const n = nextRef(cur.chapter, cur.verse);
-        browsing = n || cur;
-      }else{
-        browsing = prevRef(cur.chapter, cur.verse) || cur;
-      }
-      render();
-    },
-    setBookmarkHere(){
-      if(!browsing) return;
-      const bm = loadBookmark();
-      bm.chapter = browsing.chapter;
-      bm.verse = browsing.verse;
-      saveBookmark(bm);
-      browsing = null;
-      render();
-    },
-    returnToToday(){
-      browsing = null;
+      viewChapter = bm.chapter;
+      scrollToBookmark = true;
       render();
     }
   };
   window.GitaApp = GitaApp;
-
-  function prevRef(ch, v){
-    if(v > 1) return { chapter: ch, verse: v-1 };
-    if(ch > 1){
-      const pc = ch-1;
-      return { chapter: pc, verse: chapters[pc].verse_count };
-    }
-    return null;
-  }
-
-  function lastVerseRef(){
-    return { chapter: CHAPTER_COUNT, verse: chapters[CHAPTER_COUNT].verse_count };
-  }
 
   async function init(){
     try{
@@ -539,6 +440,8 @@
         bm.verse = chapters[bm.chapter].verse_count + 1; saveBookmark(bm);
       }
 
+      viewChapter = bm.chapter;
+      scrollToBookmark = true;
       render();
     }catch(err){
       app.innerHTML = `<div class="loading">Could not load the text (${escapeHtml(err.message)}). If you're viewing this file directly (file://), serve it over a local web server instead — e.g. <code>python3 -m http.server</code>.</div>`;

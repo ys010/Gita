@@ -55,11 +55,15 @@ python3 -m http.server 8000
 # then open http://localhost:8000/
 ```
 
-Your reading position is saved in your browser's `localStorage` under the
-key `gita-bookmark`, as `{chapter, verse, pace}` — nothing is sent
-anywhere. "Mark read & continue" advances the bookmark by `pace` verses
-(default 5/day); the progress bar and chapter ticks always reflect that
-saved bookmark, even while you're browsing elsewhere in the text.
+The reader shows one full chapter at a time, scrollable — not a fixed
+daily batch. Each verse has its own "mark as here" button; clicking one
+sets your bookmark to exactly that verse, so you place it wherever you
+actually stopped reading. Your reading position is saved in your
+browser's `localStorage` under the key `gita-bookmark`, as
+`{chapter, verse}` — nothing is sent anywhere. The progress bar and
+chapter ticks always reflect that saved bookmark, even while you're
+looking at a different chapter; a "jump to my place" button snaps back
+and scrolls to it.
 
 Note: dlshq.org's source page gives each verse in Romanized/IAST-style
 Sanskrit only (e.g. `Dharmakshetre kurukshetre...`), not Devanagari
